@@ -8,10 +8,12 @@ export const AuthProvider = ({children }) => {
     const [user, setUser] = useState(null)
 
     const login = (newToken) => {
+        localStorage.setItem('token', newToken)
         setToken(newToken)
       }
     
     const logout = () => {
+        localStorage.removeItem('token')
         setToken(null)
         setUser(null)
     }
@@ -22,3 +24,5 @@ export const AuthProvider = ({children }) => {
         </AuthContext.Provider>
       )
     }
+
+  
