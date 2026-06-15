@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import {getBooks} from '../services/bookService'
 import BookCard from '../components/BookCard'
-import { Box, Text, SimpleGrid } from '@chakra-ui/react'
+import { Box, Text, SimpleGrid, Button } from '@chakra-ui/react'
 
 
 function Dashboard() {
   const [books, setBooks] = useState([])
+  const navigate = useNavigate()
 
   useEffect (() =>{
 
@@ -25,6 +27,12 @@ function Dashboard() {
   return (
     <Box>
       <Navbar />
+        <Button 
+          colorScheme="blue"
+          onClick={() => navigate('/add-book')}
+        >
+          + Add Book
+        </Button>
       <Box p={8}>
         {books.length === 0 
           ? <Text>No books yet</Text>
