@@ -3,6 +3,7 @@ import  Login  from './pages/Login'
 import Register from './pages/Register'
 import Dashboard from './pages/Dashboard'
 import AddBook from './pages/AddBook'
+import BookDetail from './pages/BookDetail'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/register" element={<Register/>} />
         <Route path="/dashboard" element={<Dashboard/>} />
         <Route path="/add-book" element={<AddBook />} />
+        <Route path="/books/:id" element={<BookDetail />} />
       </Routes>
     </BrowserRouter>
   )

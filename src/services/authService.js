@@ -1,6 +1,6 @@
 import api from './apitemp'
 
-export const register = async (email, password, name) => {
+export const register = async (name, email, password) => {
   const response = await api.post('/auth/register', {
      email, password, name 
   })

@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import {
     Box,      
     Text,     
@@ -13,11 +14,14 @@ import {
     return 'gray'
   }
 
- function BookCard ({title, author, status, cover_url, onDelete}){
+ function BookCard ({title, author, status, cover_url, onDelete, id}){
+  const navigate = useNavigate()
   return (
 
     <Box border="1px" borderColor="gray.200" 
-         borderRadius="xl" overflow="hidden">
+         borderRadius="xl" overflow="hidden"
+         cursor="pointer"
+         onClick={() => navigate(`/books/${id}`)}>
 
 
          {cover_url
@@ -38,7 +42,10 @@ import {
          <Button 
           colorScheme="red"
           size="sm"
-          onClick={onDelete}
+          onClick={(e) => {
+            e.stopPropagation()
+            onDelete()
+          }}
          >
 
           Delete

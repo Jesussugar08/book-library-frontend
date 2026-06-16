@@ -27,7 +27,7 @@ function Register() {
     const handleSubmit = async () => {
       try {
         // 1. Llamar al backend
-        const response = await register(name,email, password)
+        const response = await register(name, email, password)
         
         // 2. Guardar token
         loginContext(response.data.token)

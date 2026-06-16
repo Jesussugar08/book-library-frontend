@@ -20,4 +20,9 @@ export const getBooks = async () => {
     const response = await api.post(`/books/${id}/status`, data)
     return response.data
   }
+
+  export const getBookById = async (id) => {
+    const response = await api.get(`/books/${id}`)
+    return response.data
+  }
   
