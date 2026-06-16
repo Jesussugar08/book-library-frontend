@@ -2,7 +2,8 @@ import {
     Box,      
     Text,     
     Badge,  
-    Image   
+    Image,
+    Button   
   } from '@chakra-ui/react'
 
   const getBadgeColor = (status) => {
@@ -12,7 +13,7 @@ import {
     return 'gray'
   }
 
- function BookCard ({title, author, status, cover_url}){
+ function BookCard ({title, author, status, cover_url, onDelete}){
   return (
 
     <Box border="1px" borderColor="gray.200" 
@@ -33,6 +34,16 @@ import {
             <Text color="gray.500" fontSize="sm">{author}</Text>
             <Badge mt={2} colorScheme={getBadgeColor(status)}>{status}</Badge>
          </Box>
+
+         <Button 
+          colorScheme="red"
+          size="sm"
+          onClick={onDelete}
+         >
+
+          Delete
+         </Button>
+
     </Box>
 
 

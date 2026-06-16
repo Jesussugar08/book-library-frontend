@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import {getBooks} from '../services/bookService'
 import BookCard from '../components/BookCard'
 import { Box, Text, SimpleGrid, Button } from '@chakra-ui/react'
+import {deleteBook} from '../services/bookService'
 
 
 function Dashboard() {
@@ -22,6 +23,11 @@ function Dashboard() {
     }catch(err){
       console.error(err)
     }
+  }
+
+  const handleDelete = async (id) =>{
+    await deleteBook(id)
+    fetchBooks()
   }
 
   return (
@@ -44,6 +50,7 @@ function Dashboard() {
               author={book.author}
               status={book.status}
               cover_url={book.cover_url}
+              onDelete={() => handleDelete(book.id)}
             />
           ))}
           </SimpleGrid>
