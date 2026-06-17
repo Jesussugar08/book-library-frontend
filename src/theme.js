@@ -1,6 +1,10 @@
 import { extendTheme } from '@chakra-ui/react'
 
 const theme = extendTheme({
+  config: {
+    initialColorMode: 'light',
+    useSystemColorMode: false,
+  },
   colors: {
     brand: {
       50: '#ebf8ff',
@@ -14,8 +18,16 @@ const theme = extendTheme({
       800: '#2a4365',
       900: '#1a365d',
     },
-    page: {
-      bg: '#EDF2F7',
+  },
+  semanticTokens: {
+    colors: {
+      'page.bg': { default: '#EDF2F7', _dark: 'gray.900' },
+      'surface.bg': { default: 'white', _dark: 'gray.800' },
+      'surface.border': { default: '#E2E8F0', _dark: 'gray.600' },
+      'surface.muted': { default: '#F7FAFC', _dark: 'gray.700' },
+      'text.primary': { default: '#1A202C', _dark: 'gray.100' },
+      'text.secondary': { default: '#718096', _dark: 'gray.400' },
+      'text.tertiary': { default: '#A0AEC0', _dark: 'gray.500' },
     },
   },
   fonts: {
@@ -23,29 +35,17 @@ const theme = extendTheme({
     body: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
   },
   styles: {
-    global: {
+    global: (props) => ({
       body: {
-        bg: '#EDF2F7',
-        color: '#1A202C',
+        bg: props.colorMode === 'dark' ? 'gray.900' : '#EDF2F7',
+        color: props.colorMode === 'dark' ? 'whiteAlpha.900' : '#1A202C',
       },
-    },
+    }),
   },
   components: {
     Button: {
       defaultProps: {
         colorScheme: 'brand',
-      },
-    },
-    Input: {
-      defaultProps: {
-        bg: '#F7FAFC',
-        borderColor: '#CBD5E0',
-      },
-    },
-    Textarea: {
-      defaultProps: {
-        bg: '#F7FAFC',
-        borderColor: '#CBD5E0',
       },
     },
   },

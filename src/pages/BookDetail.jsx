@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import {
-  Box, Text, Image, Button, Flex, VStack, Divider, Textarea,
+  Box, Text, Image, Button, Flex, VStack, Divider, Textarea, useColorModeValue,
 } from '@chakra-ui/react'
 import { getBookById, updateStatus, deleteBook } from '../services/bookService'
 import AppLayout from '../components/AppLayout'
@@ -112,6 +112,10 @@ function BookDetail() {
   }
 
   const metaParts = [book?.genre, book?.year, book?.pages ? `${book.pages} pages` : null].filter(Boolean)
+  const inactiveTabBg = useColorModeValue('white', 'gray.700')
+  const inactiveTabColor = useColorModeValue('#718096', 'gray.300')
+  const inactiveTabBorder = useColorModeValue('#E2E8F0', 'gray.600')
+  const deleteBtnHover = useColorModeValue('red.50', 'red.900')
 
   return (
     <AppLayout maxW="600px" navTitle="Book detail" backTo="/dashboard">
@@ -125,7 +129,7 @@ function BookDetail() {
           <Button onClick={() => navigate('/dashboard')}>Back to Dashboard</Button>
         </VStack>
       ) : book ? (
-        <Box bg="white" borderRadius="12px" border="1px" borderColor="#E2E8F0" p={5}>
+        <Box bg="surface.bg" borderRadius="12px" border="1px" borderColor="surface.border" p={5}>
           <Flex gap={4} mb={4}>
             {book.cover_url ? (
               <Image
@@ -135,17 +139,17 @@ function BookDetail() {
                 borderRadius="10px"
                 objectFit="cover"
                 border="1px"
-                borderColor="#E2E8F0"
+                borderColor="surface.border"
                 flexShrink={0}
               />
             ) : (
               <Flex
                 w="90px"
                 h="120px"
-                bg="#EDF2F7"
+                bg="page.bg"
                 borderRadius="10px"
                 border="1px"
-                borderColor="#E2E8F0"
+                borderColor="surface.border"
                 align="center"
                 justify="center"
                 fontSize="40px"
@@ -156,10 +160,10 @@ function BookDetail() {
             )}
 
             <Box flex={1}>
-              <Text fontSize="17px" fontWeight="600" color="#1A202C" mb={1}>{book.title}</Text>
-              <Text fontSize="13px" color="#718096" mb={1.5}>{book.author}</Text>
+              <Text fontSize="17px" fontWeight="600" color="text.primary" mb={1}>{book.title}</Text>
+              <Text fontSize="13px" color="text.secondary" mb={1.5}>{book.author}</Text>
               {metaParts.length > 0 && (
-                <Text fontSize="12px" color="#A0AEC0" mb={2.5}>
+                <Text fontSize="12px" color="text.tertiary" mb={2.5}>
                   {metaParts.join(' · ')}
                 </Text>
               )}
@@ -170,7 +174,9 @@ function BookDetail() {
           <Flex gap={1.5}>
             {STATUS_TABS.map((status) => {
               const active = currentStatus === status
-              const style = active ? tabActiveStyle[status] : { bg: 'white', color: '#718096', borderColor: '#E2E8F0' }
+              const style = active
+                ? tabActiveStyle[status]
+                : { bg: inactiveTabBg, color: inactiveTabColor, borderColor: inactiveTabBorder }
               return (
                 <Button
                   key={status}
@@ -192,19 +198,19 @@ function BookDetail() {
             })}
           </Flex>
 
-          <Divider my={4} borderColor="#E2E8F0" />
+          <Divider my={4} borderColor="surface.border" />
 
-          <Text fontSize="12px" color="#718096" fontWeight="500" mb={1}>Rating</Text>
+          <Text fontSize="12px" color="text.secondary" fontWeight="500" mb={1}>Rating</Text>
           <Box mb={3}>
             <StarRating value={rating} onChange={(v) => { setRating(v); }} />
           </Box>
 
-          <Text fontSize="12px" color="#718096" fontWeight="500" mb={1}>My notes</Text>
+          <Text fontSize="12px" color="text.secondary" fontWeight="500" mb={1}>My notes</Text>
           <Textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            bg="#F7FAFC"
-            borderColor="#E2E8F0"
+            bg="surface.muted"
+            borderColor="surface.border"
             borderRadius="8px"
             fontSize="13px"
             minH="80px"
@@ -214,8 +220,8 @@ function BookDetail() {
 
           {book.description && (
             <Box mb={3}>
-              <Text fontSize="12px" color="#718096" fontWeight="500" mb={1}>Description</Text>
-              <Text fontSize="14px" color="#2D3748">{book.description}</Text>
+              <Text fontSize="12px" color="text.secondary" fontWeight="500" mb={1}>Description</Text>
+              <Text fontSize="14px" color="text.primary">{book.description}</Text>
             </Box>
           )}
 
@@ -246,14 +252,14 @@ function BookDetail() {
               ✏️ Edit book
             </Button>
             <Button
-              bg="white"
+              bg="surface.bg"
               color="#E53E3E"
               border="1px"
               borderColor="#FEB2B2"
               borderRadius="8px"
               fontSize="13px"
               px={4}
-              _hover={{ bg: 'red.50' }}
+              _hover={{ bg: deleteBtnHover }}
               onClick={handleDelete}
             >
               🗑️ Delete

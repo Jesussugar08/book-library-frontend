@@ -48,7 +48,7 @@ function Register() {
       <ErrorAlert message={error} />
 
       <FormControl isRequired>
-        <FormLabel fontSize="13px" fontWeight="500" color="#2D3748">Name</FormLabel>
+        <FormLabel fontSize="13px" fontWeight="500" color="text.primary">Name</FormLabel>
         <Input
           placeholder="Your name"
           value={name}
@@ -58,7 +58,7 @@ function Register() {
       </FormControl>
 
       <FormControl isRequired>
-        <FormLabel fontSize="13px" fontWeight="500" color="#2D3748">Email address</FormLabel>
+        <FormLabel fontSize="13px" fontWeight="500" color="text.primary">Email address</FormLabel>
         <Input
           type="email"
           placeholder="email@example.com"
@@ -69,7 +69,7 @@ function Register() {
       </FormControl>
 
       <FormControl isRequired>
-        <FormLabel fontSize="13px" fontWeight="500" color="#2D3748">Password</FormLabel>
+        <FormLabel fontSize="13px" fontWeight="500" color="text.primary">Password</FormLabel>
         <Input
           type="password"
           value={password}

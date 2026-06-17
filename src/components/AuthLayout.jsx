@@ -6,23 +6,28 @@ import {
   Divider,
   Flex,
 } from '@chakra-ui/react'
+import ColorModeToggle from './ColorModeToggle'
 
 function AuthLayout({ subtitle, children, footer, onSubmit }) {
   return (
     <Box
       minH="100vh"
-      bg="#EDF2F7"
+      bg="page.bg"
       display="flex"
       alignItems="center"
       justifyContent="center"
       px={4}
+      position="relative"
     >
+      <Box position="absolute" top={4} right={4}>
+        <ColorModeToggle color="text.secondary" />
+      </Box>
       <Box
-        bg="white"
+        bg="surface.bg"
         p={{ base: 8, md: 9 }}
         borderRadius="16px"
         border="1px"
-        borderColor="#E2E8F0"
+        borderColor="surface.border"
         w="full"
         maxW="360px"
       >
@@ -41,10 +46,10 @@ function AuthLayout({ subtitle, children, footer, onSubmit }) {
           📚
         </Flex>
 
-        <Heading textAlign="center" size="md" color="#1A202C" mb={1}>
+        <Heading textAlign="center" size="md" color="text.primary" mb={1}>
           Book Library
         </Heading>
-        <Text textAlign="center" fontSize="13px" color="#718096" mb={7}>
+        <Text textAlign="center" fontSize="13px" color="text.secondary" mb={7}>
           {subtitle}
         </Text>
 
@@ -54,7 +59,7 @@ function AuthLayout({ subtitle, children, footer, onSubmit }) {
 
         {footer && (
           <>
-            <Divider my={5} borderColor="#E2E8F0" />
+            <Divider my={5} borderColor="surface.border" />
             <Text
               textAlign="center"
               fontSize="13px"

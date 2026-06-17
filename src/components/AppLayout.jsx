@@ -3,7 +3,7 @@ import Navbar from './Navbar'
 
 function AppLayout({ children, maxW = 'container.xl', navTitle, backTo }) {
   return (
-    <Box minH="100vh" bg="#EDF2F7">
+    <Box minH="100vh" bg="page.bg">
       <Navbar title={navTitle} backTo={backTo} />
       <Container maxW={maxW} py={5} px={{ base: 4, md: 5 }}>
         {children}

@@ -14,11 +14,11 @@ function SectionTitle({ children }) {
     <Text
       fontSize="13px"
       fontWeight="600"
-      color="#2D3748"
+      color="text.primary"
       mb={3}
       pb={2}
       borderBottom="1px"
-      borderColor="#E2E8F0"
+      borderColor="surface.border"
     >
       {children}
     </Text>
@@ -89,7 +89,7 @@ function AddBook() {
 
   return (
     <AppLayout maxW="600px" navTitle="Add new book" backTo="/dashboard">
-      <Box bg="white" borderRadius="12px" border="1px" borderColor="#E2E8F0" p={5}>
+      <Box bg="surface.bg" borderRadius="12px" border="1px" borderColor="surface.border" p={5}>
         <ErrorAlert message={validationError || error} />
 
         <VStack spacing={4} as="form" onSubmit={handleSubmit} align="stretch">
@@ -97,11 +97,11 @@ function AddBook() {
             <SectionTitle>Book cover</SectionTitle>
             <Box
               border="2px dashed"
-              borderColor="#CBD5E0"
+              borderColor="surface.border"
               borderRadius="10px"
               p={6}
               textAlign="center"
-              bg="#F7FAFC"
+              bg="surface.muted"
               cursor="pointer"
               onClick={() => fileInputRef.current?.click()}
             >
@@ -116,8 +116,8 @@ function AddBook() {
                 <Image src={coverUrl} maxH="160px" mx="auto" borderRadius="8px" objectFit="cover" />
               ) : (
                 <>
-                  <Text fontSize="32px" color="#A0AEC0" mb={2}>📤</Text>
-                  <Text fontSize="12px" color="#718096" lineHeight="tall">
+                  <Text fontSize="32px" color="text.tertiary" mb={2}>📤</Text>
+                  <Text fontSize="12px" color="text.secondary" lineHeight="tall">
                     <Text as="span" color="brand.500" fontWeight="500">Click to upload</Text>
                     {' '}cover image
                     <br />
@@ -133,33 +133,33 @@ function AddBook() {
             <SectionTitle>Book info</SectionTitle>
 
             <FormControl isRequired mb={3.5}>
-              <FormLabel fontSize="13px" fontWeight="500" color="#2D3748" mb={1.5}>Title *</FormLabel>
+              <FormLabel fontSize="13px" fontWeight="500" color="text.primary" mb={1.5}>Title *</FormLabel>
               <Input value={title} onChange={(e) => setTitle(e.target.value)} borderRadius="8px" />
             </FormControl>
 
             <FormControl isRequired mb={3.5}>
-              <FormLabel fontSize="13px" fontWeight="500" color="#2D3748" mb={1.5}>Author *</FormLabel>
+              <FormLabel fontSize="13px" fontWeight="500" color="text.primary" mb={1.5}>Author *</FormLabel>
               <Input value={author} onChange={(e) => setAuthor(e.target.value)} borderRadius="8px" />
             </FormControl>
 
             <SimpleGrid columns={2} spacing={2.5} mb={3.5}>
               <FormControl>
-                <FormLabel fontSize="13px" fontWeight="500" color="#2D3748" mb={1.5}>Genre</FormLabel>
+                <FormLabel fontSize="13px" fontWeight="500" color="text.primary" mb={1.5}>Genre</FormLabel>
                 <Input value={genre} onChange={(e) => setGenre(e.target.value)} borderRadius="8px" />
               </FormControl>
               <FormControl>
-                <FormLabel fontSize="13px" fontWeight="500" color="#2D3748" mb={1.5}>Year</FormLabel>
+                <FormLabel fontSize="13px" fontWeight="500" color="text.primary" mb={1.5}>Year</FormLabel>
                 <Input type="number" value={year} onChange={(e) => setYear(e.target.value)} borderRadius="8px" />
               </FormControl>
             </SimpleGrid>
 
             <FormControl mb={3.5}>
-              <FormLabel fontSize="13px" fontWeight="500" color="#2D3748" mb={1.5}>Pages</FormLabel>
+              <FormLabel fontSize="13px" fontWeight="500" color="text.primary" mb={1.5}>Pages</FormLabel>
               <Input type="number" value={pages} onChange={(e) => setPages(e.target.value)} borderRadius="8px" />
             </FormControl>
 
             <FormControl>
-              <FormLabel fontSize="13px" fontWeight="500" color="#2D3748" mb={1.5}>Description</FormLabel>
+              <FormLabel fontSize="13px" fontWeight="500" color="text.primary" mb={1.5}>Description</FormLabel>
               <Textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -173,8 +173,8 @@ function AddBook() {
           <Flex gap={2} mt={1}>
             <Button
               variant="outline"
-              borderColor="#CBD5E0"
-              color="#718096"
+              borderColor="surface.border"
+              color="text.secondary"
               borderRadius="8px"
               fontSize="13px"
               px={5}

@@ -19,9 +19,9 @@ const FILTERS = [
 
 function StatMini({ value, label, color }) {
   return (
-    <Box bg="white" borderRadius="10px" border="1px" borderColor="#E2E8F0" p={3.5} textAlign="center">
+    <Box bg="surface.bg" borderRadius="10px" border="1px" borderColor="surface.border" p={3.5} textAlign="center">
       <Text fontSize="2xl" fontWeight="600" color={color}>{value}</Text>
-      <Text fontSize="11px" color="#718096" mt="2px">{label}</Text>
+      <Text fontSize="11px" color="text.secondary" mt="2px">{label}</Text>
     </Box>
   )
 }
@@ -77,7 +77,7 @@ function Dashboard() {
       </SimpleGrid>
 
       <Flex align="center" justify="space-between" mb={3.5}>
-        <Text fontSize="15px" fontWeight="600" color="#1A202C">My library</Text>
+        <Text fontSize="15px" fontWeight="600" color="text.primary">My library</Text>
         <Button
           bg="brand.600"
           color="white"
@@ -94,13 +94,13 @@ function Dashboard() {
       </Flex>
 
       <InputGroup mb={3.5}>
-        <InputLeftElement pointerEvents="none" color="#A0AEC0" pl={1}>
+        <InputLeftElement pointerEvents="none" color="text.tertiary" pl={1}>
           🔍
         </InputLeftElement>
         <Input
           pl={10}
-          bg="white"
-          borderColor="#CBD5E0"
+          bg="surface.bg"
+          borderColor="surface.border"
           borderRadius="8px"
           fontSize="13px"
           placeholder="Search by title or author..."
@@ -119,11 +119,11 @@ function Dashboard() {
             fontWeight="normal"
             px={3.5}
             py={1}
-            bg={filter === key ? 'brand.600' : 'white'}
-            color={filter === key ? 'white' : '#718096'}
+            bg={filter === key ? 'brand.600' : 'surface.bg'}
+            color={filter === key ? 'white' : 'text.secondary'}
             border="1px"
-            borderColor={filter === key ? 'brand.600' : '#CBD5E0'}
-            _hover={{ bg: filter === key ? 'brand.700' : 'gray.50' }}
+            borderColor={filter === key ? 'brand.600' : 'surface.border'}
+            _hover={{ bg: filter === key ? 'brand.700' : 'surface.muted' }}
             onClick={() => setFilter(key)}
           >
             {label}

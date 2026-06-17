@@ -8,10 +8,10 @@ function BookCard({ title, author, status, cover_url, id }) {
   return (
     <Box
       border="1px"
-      borderColor="#E2E8F0"
+      borderColor="surface.border"
       borderRadius="10px"
       overflow="hidden"
-      bg="white"
+      bg="surface.bg"
       cursor="pointer"
       transition="transform 0.15s"
       _hover={{ transform: 'translateY(-2px)' }}
@@ -20,7 +20,7 @@ function BookCard({ title, author, status, cover_url, id }) {
       {cover_url ? (
         <Image src={cover_url} h="100px" w="100%" objectFit="cover" />
       ) : (
-        <Box h="100px" bg="#EDF2F7" display="flex" alignItems="center" justifyContent="center">
+        <Box h="100px" bg="page.bg" display="flex" alignItems="center" justifyContent="center">
           <Text fontSize="36px">📖</Text>
         </Box>
       )}
@@ -29,13 +29,13 @@ function BookCard({ title, author, status, cover_url, id }) {
         <Text
           fontSize="12px"
           fontWeight="600"
-          color="#1A202C"
+          color="text.primary"
           mb="2px"
           noOfLines={1}
         >
           {title}
         </Text>
-        <Text fontSize="11px" color="#718096" mb="6px" noOfLines={1}>
+        <Text fontSize="11px" color="text.secondary" mb="6px" noOfLines={1}>
           {author}
         </Text>
         <StatusBadge status={status} />
