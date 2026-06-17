@@ -4,8 +4,8 @@ import {
   InputGroup,
   InputRightElement,
   IconButton,
-  Text,
 } from '@chakra-ui/react'
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 
 function PasswordInput(props) {
   const [show, setShow] = useState(false)
@@ -22,7 +22,7 @@ function PasswordInput(props) {
         <IconButton
           type="button"
           aria-label={show ? 'Hide password' : 'Show password'}
-          icon={<Text fontSize="sm" lineHeight={1}>{show ? '🙈' : '👁️'}</Text>}
+          icon={show ? <ViewOffIcon boxSize={4} /> : <ViewIcon boxSize={4} />}
           variant="ghost"
           size="sm"
           color="text.tertiary"
