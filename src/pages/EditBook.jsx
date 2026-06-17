@@ -1,12 +1,12 @@
-import { useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import {
-  Box, Button, Input, FormControl, FormLabel, VStack, Textarea, Image, Text, Flex, SimpleGrid,
+  Box, Button, Input, FormControl, FormLabel, VStack, Textarea, Text, Flex, SimpleGrid,
 } from '@chakra-ui/react'
-import { createBook } from '../services/bookService'
+import { getBookById, updateBook } from '../services/bookService'
 import AppLayout from '../components/AppLayout'
+import LoadingState from '../components/LoadingState'
 import ErrorAlert from '../components/ErrorAlert'
-import api from '../services/api'
 import { getApiErrorMessage } from '../utils/apiError'
 
 function SectionTitle({ children }) {
@@ -25,38 +25,41 @@ function SectionTitle({ children }) {
   )
 }
 
-function AddBook() {
+function EditBook() {
+  const { id } = useParams()
+  const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [pages, setPages] = useState('')
   const [genre, setGenre] = useState('')
   const [year, setYear] = useState('')
   const [description, setDescription] = useState('')
-  const [coverUrl, setCoverUrl] = useState('')
-  const [uploading, setUploading] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [validationError, setValidationError] = useState('')
-  const fileInputRef = useRef(null)
-  const navigate = useNavigate()
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0]
-    if (!file) return
-
-    setUploading(true)
-    setError('')
-    try {
-      const formData = new FormData()
-      formData.append('cover', file)
-      const response = await api.post('/upload/cover', formData)
-      setCoverUrl(response.data.data.url)
-    } catch (err) {
-      setError(getApiErrorMessage(err, 'Failed to upload cover image'))
-    } finally {
-      setUploading(false)
-    }
-  }
+  useEffect(() => {
+    let active = true
+    getBookById(id)
+      .then((data) => {
+        if (!active) return
+        const book = data.data
+        setTitle(book.title || '')
+        setAuthor(book.author || '')
+        setPages(book.pages?.toString() || '')
+        setGenre(book.genre || '')
+        setYear(book.year?.toString() || '')
+        setDescription(book.description || '')
+      })
+      .catch((err) => {
+        if (active) setError(getApiErrorMessage(err, 'Failed to load book'))
+      })
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+    return () => { active = false }
+  }, [id])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -67,68 +70,39 @@ function AddBook() {
       return
     }
 
-    setLoading(true)
+    setSaving(true)
     setError('')
     try {
-      await createBook({
+      await updateBook(id, {
         title: title.trim(),
         author: author.trim(),
-        cover_url: coverUrl,
         pages: pages || null,
         genre: genre || null,
         year: year || null,
         description: description || null,
       })
-      navigate('/dashboard')
+      navigate(`/books/${id}`)
     } catch (err) {
-      setError(getApiErrorMessage(err, 'Failed to create book'))
+      setError(getApiErrorMessage(err, 'Failed to update book'))
     } finally {
-      setLoading(false)
+      setSaving(false)
     }
   }
 
+  if (loading) {
+    return (
+      <AppLayout maxW="600px" navTitle="Edit book" backTo={`/books/${id}`}>
+        <LoadingState message="Loading book..." />
+      </AppLayout>
+    )
+  }
+
   return (
-    <AppLayout maxW="600px" navTitle="Add new book" backTo="/dashboard">
+    <AppLayout maxW="600px" navTitle="Edit book" backTo={`/books/${id}`}>
       <Box bg="white" borderRadius="12px" border="1px" borderColor="#E2E8F0" p={5}>
         <ErrorAlert message={validationError || error} />
 
         <VStack spacing={4} as="form" onSubmit={handleSubmit} align="stretch">
-          <Box>
-            <SectionTitle>Book cover</SectionTitle>
-            <Box
-              border="2px dashed"
-              borderColor="#CBD5E0"
-              borderRadius="10px"
-              p={6}
-              textAlign="center"
-              bg="#F7FAFC"
-              cursor="pointer"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <Input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                display="none"
-                onChange={handleImageUpload}
-              />
-              {coverUrl ? (
-                <Image src={coverUrl} maxH="160px" mx="auto" borderRadius="8px" objectFit="cover" />
-              ) : (
-                <>
-                  <Text fontSize="32px" color="#A0AEC0" mb={2}>📤</Text>
-                  <Text fontSize="12px" color="#718096" lineHeight="tall">
-                    <Text as="span" color="brand.500" fontWeight="500">Click to upload</Text>
-                    {' '}cover image
-                    <br />
-                    JPG, PNG up to 2MB
-                  </Text>
-                </>
-              )}
-              {uploading && <Text fontSize="sm" color="gray.500" mt={2}>Uploading...</Text>}
-            </Box>
-          </Box>
-
           <Box>
             <SectionTitle>Book info</SectionTitle>
 
@@ -170,7 +144,7 @@ function AddBook() {
             </FormControl>
           </Box>
 
-          <Flex gap={2} mt={1}>
+          <Flex gap={2}>
             <Button
               variant="outline"
               borderColor="#CBD5E0"
@@ -178,7 +152,7 @@ function AddBook() {
               borderRadius="8px"
               fontSize="13px"
               px={5}
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate(`/books/${id}`)}
             >
               Cancel
             </Button>
@@ -190,9 +164,9 @@ function AddBook() {
               borderRadius="8px"
               fontSize="13px"
               _hover={{ bg: 'brand.700' }}
-              isLoading={loading}
+              isLoading={saving}
             >
-              Save book
+              Save changes
             </Button>
           </Flex>
         </VStack>
@@ -201,4 +175,4 @@ function AddBook() {
   )
 }
 
-export default AddBook
+export default EditBook

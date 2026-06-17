@@ -1,4 +1,4 @@
-import api from './apitemp'
+import api from './api'
 
 // Ejemplo con getBooks:
 export const getBooks = async () => {
@@ -21,8 +21,17 @@ export const getBooks = async () => {
     return response.data
   }
 
+  export const updateBook = async (id, data) => {
+    const response = await api.put(`/books/${id}`, data)
+    return response.data
+  }
+
   export const getBookById = async (id) => {
     const response = await api.get(`/books/${id}`)
     return response.data
   }
   
+  export const getStats = async () => {
+    const response = await api.get('/books/stats')
+    return response.data
+  }

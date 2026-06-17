@@ -1,105 +1,86 @@
 import {
-  Box,
   Button,
   Input,
-  Text,
-  Heading,
-  VStack,
   FormControl,
   FormLabel,
-  Alert,
-  AlertIcon,
 } from '@chakra-ui/react'
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { AuthContext } from '../contexts/AuthContext'
+import { useAuth } from '../hooks/useAuth'
 import { login } from '../services/authService'
+import AuthLayout from '../components/AuthLayout'
+import ErrorAlert from '../components/ErrorAlert'
+import { getApiErrorMessage } from '../utils/apiError'
 
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const { login: loginContext } = useContext(AuthContext)
+  const [loading, setLoading] = useState(false)
+  const { login: loginContext } = useAuth()
   const navigate = useNavigate()
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
     try {
-      // 1. Llamar al backend
       const response = await login(email, password)
-      
-      // 2. Guardar token
-      loginContext(response.data.token)
-      
-      // 3. Redirigir
+      loginContext(response.data.token, response.data.user)
       navigate('/dashboard')
-      
-    } catch(err) {
-      // 4. Mostrar error
-      setError('Invalid credentials')
+    } catch (err) {
+      setError(getApiErrorMessage(err, 'Invalid credentials'))
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <Box minH="100vh" bg="gray.100" display="flex" 
-    alignItems="center" justifyContent="center" >
+    <AuthLayout
+      subtitle="Sign in to your account"
+      onSubmit={handleSubmit}
+      footer={{
+        text: "Don't have an account? Sign up",
+        onClick: () => navigate('/register'),
+      }}
+    >
+      <ErrorAlert message={error} />
 
-      <Box bg="white" p={8} borderRadius="xl" 
-      border="1px" borderColor="gray.200" w="380px">
+      <FormControl isRequired>
+        <FormLabel fontSize="13px" fontWeight="500" color="#2D3748">Email address</FormLabel>
+        <Input
+          type="email"
+          placeholder="email@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          borderRadius="8px"
+        />
+      </FormControl>
 
-      <Heading textAlign="center">Book Library</Heading>
-      <Text textAlign="center">Sign in to your account</Text>
+      <FormControl isRequired>
+        <FormLabel fontSize="13px" fontWeight="500" color="#2D3748">Password</FormLabel>
+        <Input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          borderRadius="8px"
+        />
+      </FormControl>
 
-      {error && (
-          <Alert status="error">
-            <AlertIcon />
-            {error}
-          </Alert>
-      )}
-      <VStack spacing = {3}>
-        <FormControl >
-          <FormLabel>Email</FormLabel>
-          <Input
-            placeholder="email@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Password</FormLabel>
-          <Input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </FormControl>
-
-        <Button
-          
-          colorScheme = "blue"
-          width = "100%"
-          onClick={handleSubmit}
-        >
-          Sign in
-        </Button>
-      </VStack>
-
-      <Text textAlign = "center"
-        color = "blue.500" 
-        cursor = "pointer"
-        onClick={()=> navigate('/register')}
-        >
-
-        Don't have an account? Sign up
-
-
-      </Text>
-
-    
-      </Box>
-
-    </Box>
-   
+      <Button
+        w="full"
+        bg="brand.600"
+        color="white"
+        borderRadius="8px"
+        fontSize="14px"
+        fontWeight="500"
+        _hover={{ bg: 'brand.700' }}
+        type="submit"
+        isLoading={loading}
+      >
+        Sign in
+      </Button>
+    </AuthLayout>
   )
 }
 

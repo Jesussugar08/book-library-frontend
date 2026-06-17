@@ -1,117 +1,98 @@
-
 import {
-    Box,
-    Button,
-    Input,
-    Text,
-    Heading,
-    VStack,
-    FormControl,
-    FormLabel,
-    Alert,
-    AlertIcon,
-  } from '@chakra-ui/react'
-  import { useState, useContext } from 'react'
-  import { useNavigate } from 'react-router-dom'
-  import { AuthContext } from '../contexts/AuthContext'
-  import { register } from '../services/authService'
-  
+  Button,
+  Input,
+  FormControl,
+  FormLabel,
+} from '@chakra-ui/react'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
+import { register } from '../services/authService'
+import AuthLayout from '../components/AuthLayout'
+import ErrorAlert from '../components/ErrorAlert'
+import { getApiErrorMessage } from '../utils/apiError'
+
 function Register() {
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
-    const { login: loginContext } = useContext(AuthContext)
-    const navigate = useNavigate()
-  
-    const handleSubmit = async () => {
-      try {
-        // 1. Llamar al backend
-        const response = await register(name, email, password)
-        
-        // 2. Guardar token
-        loginContext(response.data.token)
-        
-        // 3. Redirigir
-        navigate('/dashboard')
-        
-      } catch(err) {
-        // 4. Mostrar error
-        setError('Invalid credentials')
-      }
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { login: loginContext } = useAuth()
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    try {
+      const response = await register(name, email, password)
+      loginContext(response.data.token, response.data.user)
+      navigate('/dashboard')
+    } catch (err) {
+      setError(getApiErrorMessage(err, 'Registration failed'))
+    } finally {
+      setLoading(false)
     }
-  
-    return (
-      <Box minH="100vh" bg="gray.100" display="flex" 
-      alignItems="center" justifyContent="center" >
-  
-        <Box bg="white" p={8} borderRadius="xl" 
-        border="1px" borderColor="gray.200" w="380px">
-  
-        <Heading textAlign="center">Book Library</Heading>
-        <Text textAlign="center">Create your account</Text>
-  
-        {error && (
-            <Alert status="error">
-              <AlertIcon />
-              {error}
-            </Alert>
-        )}
-        <VStack spacing = {3}>
-
-
-        <FormControl>
-            <FormLabel>Name</FormLabel>
-            <Input
-              placeholder="Your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-        </FormControl>
-
-          <FormControl >
-            <FormLabel>Email</FormLabel>
-            <Input
-              placeholder="email@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </FormControl>
-  
-          <FormControl>
-            <FormLabel>Password</FormLabel>
-            <Input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </FormControl>
-  
-          <Button
-            
-            colorScheme = "blue"
-            width = "100%"
-            onClick={handleSubmit}
-          >
-            Sign up
-          </Button>
-        </VStack>
-  
-        <Text textAlign = "center"
-          color = "blue.500" 
-          cursor = "pointer"
-          onClick={()=> navigate('/login')}
-          >
-  
-        Already have an account? Sign in
-        </Text>
-  
-      
-        </Box>
-  
-      </Box>
-     
-    )
   }
-  
-  export default Register
+
+  return (
+    <AuthLayout
+      subtitle="Create your account"
+      onSubmit={handleSubmit}
+      footer={{
+        text: 'Already have an account? Sign in',
+        onClick: () => navigate('/login'),
+      }}
+    >
+      <ErrorAlert message={error} />
+
+      <FormControl isRequired>
+        <FormLabel fontSize="13px" fontWeight="500" color="#2D3748">Name</FormLabel>
+        <Input
+          placeholder="Your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          borderRadius="8px"
+        />
+      </FormControl>
+
+      <FormControl isRequired>
+        <FormLabel fontSize="13px" fontWeight="500" color="#2D3748">Email address</FormLabel>
+        <Input
+          type="email"
+          placeholder="email@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          borderRadius="8px"
+        />
+      </FormControl>
+
+      <FormControl isRequired>
+        <FormLabel fontSize="13px" fontWeight="500" color="#2D3748">Password</FormLabel>
+        <Input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          borderRadius="8px"
+        />
+      </FormControl>
+
+      <Button
+        w="full"
+        bg="brand.600"
+        color="white"
+        borderRadius="8px"
+        fontSize="14px"
+        fontWeight="500"
+        _hover={{ bg: 'brand.700' }}
+        type="submit"
+        isLoading={loading}
+      >
+        Sign up
+      </Button>
+    </AuthLayout>
+  )
+}
+
+export default Register

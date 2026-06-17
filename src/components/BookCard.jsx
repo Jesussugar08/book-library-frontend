@@ -1,61 +1,46 @@
 import { useNavigate } from 'react-router-dom'
-import {
-    Box,      
-    Text,     
-    Badge,  
-    Image,
-    Button   
-  } from '@chakra-ui/react'
+import { Box, Text, Image } from '@chakra-ui/react'
+import StatusBadge from './StatusBadge'
 
-  const getBadgeColor = (status) => {
-    if(status === 'read') return 'green'
-    if(status === 'reading') return 'orange'
-    if(status === 'want_to_read') return 'purple'
-    return 'gray'
-  }
-
- function BookCard ({title, author, status, cover_url, onDelete, id}){
+function BookCard({ title, author, status, cover_url, id }) {
   const navigate = useNavigate()
+
   return (
+    <Box
+      border="1px"
+      borderColor="#E2E8F0"
+      borderRadius="10px"
+      overflow="hidden"
+      bg="white"
+      cursor="pointer"
+      transition="transform 0.15s"
+      _hover={{ transform: 'translateY(-2px)' }}
+      onClick={() => navigate(`/books/${id}`)}
+    >
+      {cover_url ? (
+        <Image src={cover_url} h="100px" w="100%" objectFit="cover" />
+      ) : (
+        <Box h="100px" bg="#EDF2F7" display="flex" alignItems="center" justifyContent="center">
+          <Text fontSize="36px">📖</Text>
+        </Box>
+      )}
 
-    <Box border="1px" borderColor="gray.200" 
-         borderRadius="xl" overflow="hidden"
-         cursor="pointer"
-         onClick={() => navigate(`/books/${id}`)}>
-
-
-         {cover_url
-            ?<Image src = {cover_url} h="150px" w="100%" objectFit="cover"/>
-            : <Box h="150px" bg="gray.100" display="flex" 
-                    alignItems="center" justifyContent="center">
-                <Text fontSize="40px">📚</Text>
-              </Box>
-         }   
-         
-
-         <Box p={4}>
-            <Text fontWeight="bold" >{title}</Text>
-            <Text color="gray.500" fontSize="sm">{author}</Text>
-            <Badge mt={2} colorScheme={getBadgeColor(status)}>{status}</Badge>
-         </Box>
-
-         <Button 
-          colorScheme="red"
-          size="sm"
-          onClick={(e) => {
-            e.stopPropagation()
-            onDelete()
-          }}
-         >
-
-          Delete
-         </Button>
-
+      <Box p="10px">
+        <Text
+          fontSize="12px"
+          fontWeight="600"
+          color="#1A202C"
+          mb="2px"
+          noOfLines={1}
+        >
+          {title}
+        </Text>
+        <Text fontSize="11px" color="#718096" mb="6px" noOfLines={1}>
+          {author}
+        </Text>
+        <StatusBadge status={status} />
+      </Box>
     </Box>
-
-
-
-
   )
 }
 
