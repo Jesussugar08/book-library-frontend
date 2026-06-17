@@ -8,6 +8,7 @@ import ErrorAlert from '../components/ErrorAlert'
 import {
   Text, SimpleGrid, Button, Flex, Box, Input, InputGroup, InputLeftElement,
 } from '@chakra-ui/react'
+import { SearchIcon } from '@chakra-ui/icons'
 import { getApiErrorMessage } from '../utils/apiError'
 
 const FILTERS = [
@@ -95,7 +96,7 @@ function Dashboard() {
 
       <InputGroup mb={3.5}>
         <InputLeftElement pointerEvents="none" color="text.tertiary" pl={1}>
-          🔍
+          <SearchIcon boxSize={4} />
         </InputLeftElement>
         <Input
           pl={10}

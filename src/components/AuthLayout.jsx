@@ -7,6 +7,7 @@ import {
   Flex,
 } from '@chakra-ui/react'
 import ColorModeToggle from './ColorModeToggle'
+import { BookIcon } from './icons/AppIcons'
 
 function AuthLayout({ subtitle, children, footer, onSubmit }) {
   return (
@@ -38,12 +39,11 @@ function AuthLayout({ subtitle, children, footer, onSubmit }) {
           borderRadius="12px"
           align="center"
           justify="center"
-          fontSize="24px"
           color="white"
           mx="auto"
           mb={5}
         >
-          📚
+          <BookIcon boxSize={6} />
         </Flex>
 
         <Heading textAlign="center" size="md" color="text.primary" mb={1}>

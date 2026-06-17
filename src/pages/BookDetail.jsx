@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import {
   Box, Text, Image, Button, Flex, VStack, Divider, Textarea, useColorModeValue,
 } from '@chakra-ui/react'
+import { EditIcon, DeleteIcon } from '@chakra-ui/icons'
 import { getBookById, updateStatus, deleteBook } from '../services/bookService'
 import AppLayout from '../components/AppLayout'
 import LoadingState from '../components/LoadingState'
@@ -11,6 +12,7 @@ import StatusBadge from '../components/StatusBadge'
 import StarRating from '../components/StarRating'
 import { formatStatus } from '../utils/bookStatus'
 import { getApiErrorMessage } from '../utils/apiError'
+import { BookIcon } from '../components/icons/AppIcons'
 
 const STATUS_TABS = ['want_to_read', 'reading', 'read']
 
@@ -152,10 +154,10 @@ function BookDetail() {
                 borderColor="surface.border"
                 align="center"
                 justify="center"
-                fontSize="40px"
+                color="text.tertiary"
                 flexShrink={0}
               >
-                📗
+                <BookIcon boxSize={10} />
               </Flex>
             )}
 
@@ -246,10 +248,11 @@ function BookDetail() {
               color="white"
               borderRadius="8px"
               fontSize="13px"
+              leftIcon={<EditIcon boxSize={3.5} />}
               _hover={{ bg: 'brand.700' }}
               onClick={() => navigate(`/books/${id}/edit`)}
             >
-              ✏️ Edit book
+              Edit book
             </Button>
             <Button
               bg="surface.bg"
@@ -259,10 +262,11 @@ function BookDetail() {
               borderRadius="8px"
               fontSize="13px"
               px={4}
+              leftIcon={<DeleteIcon boxSize={3.5} />}
               _hover={{ bg: deleteBtnHover }}
               onClick={handleDelete}
             >
-              🗑️ Delete
+              Delete
             </Button>
           </Flex>
         </Box>

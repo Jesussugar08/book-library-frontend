@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { Box, Text, Image } from '@chakra-ui/react'
 import StatusBadge from './StatusBadge'
+import { BookIcon } from './icons/AppIcons'
 
 function BookCard({ title, author, status, cover_url, id }) {
   const navigate = useNavigate()
@@ -20,8 +21,8 @@ function BookCard({ title, author, status, cover_url, id }) {
       {cover_url ? (
         <Image src={cover_url} h="100px" w="100%" objectFit="cover" />
       ) : (
-        <Box h="100px" bg="page.bg" display="flex" alignItems="center" justifyContent="center">
-          <Text fontSize="36px">📖</Text>
+        <Box h="100px" bg="page.bg" display="flex" alignItems="center" justifyContent="center" color="text.tertiary">
+          <BookIcon boxSize={8} />
         </Box>
       )}
 

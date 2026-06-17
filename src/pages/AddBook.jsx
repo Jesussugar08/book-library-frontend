@@ -8,6 +8,7 @@ import AppLayout from '../components/AppLayout'
 import ErrorAlert from '../components/ErrorAlert'
 import api from '../services/api'
 import { getApiErrorMessage } from '../utils/apiError'
+import { UploadIcon } from '../components/icons/AppIcons'
 
 function SectionTitle({ children }) {
   return (
@@ -116,7 +117,9 @@ function AddBook() {
                 <Image src={coverUrl} maxH="160px" mx="auto" borderRadius="8px" objectFit="cover" />
               ) : (
                 <>
-                  <Text fontSize="32px" color="text.tertiary" mb={2}>📤</Text>
+                  <Flex justify="center" mb={2} color="text.tertiary">
+                    <UploadIcon boxSize={8} />
+                  </Flex>
                   <Text fontSize="12px" color="text.secondary" lineHeight="tall">
                     <Text as="span" color="brand.500" fontWeight="500">Click to upload</Text>
                     {' '}cover image
