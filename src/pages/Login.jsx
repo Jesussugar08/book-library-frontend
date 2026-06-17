@@ -10,6 +10,7 @@ import { useAuth } from '../hooks/useAuth'
 import { login } from '../services/authService'
 import AuthLayout from '../components/AuthLayout'
 import ErrorAlert from '../components/ErrorAlert'
+import PasswordInput from '../components/PasswordInput'
 import { getApiErrorMessage } from '../utils/apiError'
 
 function Login() {
@@ -59,11 +60,9 @@ function Login() {
 
       <FormControl isRequired>
         <FormLabel fontSize="13px" fontWeight="500" color="text.primary">Password</FormLabel>
-        <Input
-          type="password"
+        <PasswordInput
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          borderRadius="8px"
         />
       </FormControl>
 
